@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="Jesper Stein Sandal">
+        <title>Drupal-fixer 1.0</title>
+        <script>
+            function fixAll() {
+                var unfixed = document.getElementById("rawarticle").value;
+                for (i=0; i<unfixed.length; i++) {
+                    var braindex = 0;
+                    var parindex = 0;
+                    if(unfixed[i] == "]" & unfixed[i-1] == " ") {
+                        var left;
+                        var right;
+                        braindex = i;
+                        parindex = braindex;
+                        var runloop = true;
+                        while (runloop & parindex<unfixed.length) {
+                            if(unfixed[parindex] == ")") {
+                                if(unfixed[parindex+1] == "." || unfixed[parindex+1] == " ") {
+                                    runloop = false;
+                                }
+                                else {
+                                    left = unfixed.slice(0,parindex+1);
+                                    right = unfixed.slice(parindex+1);
+                                    unfixed = left + " " + right;
+                                    left = unfixed.slice(0,braindex-1);
+                                    right = unfixed.slice(braindex);
+                                    unfixed = left + right;
+                                    runloop = false;
+                                }
+                            }
+                            else {
+                                parindex++;
+                                runloop = true;
+                            }
+                        }
+                    }
+                }
+                unfixed = unfixed.replace(/”/g, '"');
+                unfixed = unfixed.replace(/“/g, '"');
+                unfixed = unfixed.replace(/‘/g, "'");
+                unfixed = unfixed.replace(/’/g, "'");
+                unfixed = unfixed.replace(/\[\s/g, " \[");
+                unfixed = unfixed.replace(/\(\s/g, "(");
+                unfixed = unfixed.replace(/\[aid:\s/g, "[aid:");
+                for (i=0; i<unfixed.length; i++) {
+                    if(unfixed[i] == '"'){
+                        var sentenceloop = true;
+                        var sentenceindex = i+1;
+                        while (sentenceloop & sentenceindex<unfixed.length) {
+                            if(unfixed[sentenceindex] == '"') {
+                                if(unfixed[sentenceindex-1] == "," || unfixed[sentenceindex-1] == "?") {
+                                    var left = unfixed.slice(0,i);
+                                    var sentence = unfixed.slice(i+1,sentenceindex);
+                                    var right = unfixed.slice(sentenceindex+1);
+                                    unfixed = left + "»" + sentence + "«" + right;
+                                    sentenceloop = false;
+                                }
+                                else {
+                                    sentenceloop = false;
+                                }
+                            }
+                            else {
+                                sentenceindex++;
+                            }
+                        }
+                    }
+                }
+                for (i=0; i<unfixed.length; i++) {
+                    var braindex = 0;
+                    var parindex = 0;
+                    if(unfixed[i] == "]" & unfixed[i-1] == ".") {
+                        var left;
+                        var right;
+                        braindex = i;
+                        parindex = braindex;
+                        var runloop = true;
+                        while (runloop & parindex<unfixed.length) {
+                            if(unfixed[parindex] == ")") {
+                                left = unfixed.slice(0,parindex+1);
+                                right = unfixed.slice(parindex+1);
+                                unfixed = left + "." + right;
+                                left = unfixed.slice(0,braindex-1);
+                                right = unfixed.slice(braindex);
+                                unfixed = left + right;
+                                runloop = false;
+                            }
+                            else {
+                                parindex++;
+                                runloop = true;
+                            }
+                        }
+                    }
+                }
+                document.getElementById("rawarticle").value = unfixed;
+            }
+        </script>
+        <script>
+            function clearRawarticle() {
+                document.getElementById("rawarticle").value = "";
+            }
+        </script>
+        <script>
+            function selectAll() {
+                document.getElementById("rawarticle").select();
+            }
+        </script>
+        <style>
+            body { background-color: lavender;}
+            h1 { 
+                font-family: "Trebuchet MS", Helvetica, sans-serif;
+                color: steelblue;
+                font-size: 3em;
+            }
+            form {
+                width: 100%;
+            }
+            .padded {
+                padding-left: 30px;
+            }
+            div.instructions {
+                padding-left: 30px;
+                font-family: "Trebuchet MS", Helvetica, sans-serif;
+                font-size: 1.2em;
+                color: darkblue;
+            }
+            button {
+                padding-top: 2px;
+                padding-bottom: 2px;
+                font-size: 1.5em;
+                font-family: "Arial Black", Gadget, sans-serif;
+                margin-top: 5px;
+                margin-bottom: 5px;
+                background-color: steelblue;
+                color: lavender;
+                width: auto;
+                border: 0;
+                border-radius: 2px;
+            }
+            button.clear {
+                background-color: tomato;
+                color: lavender;
+                margin-left: 16px;
+            }
+            button.selectit {
+                background-color: limegreen;
+                color: lavender;
+                margin-left: 16px;
+            }
+            button:hover {
+                background-color: darkorchid;
+                color: black;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="padded">
+            <h1>Ret artikelformatering til Drupal</h1>
+        </div>
+        <p>
+            <form class="padded">
+                <textarea name="rawarticle" id="rawarticle" rows="20" cols="120"></textarea><br>
+                <button type="button" onclick="fixAll()">Fiks alt!</button>
+                <button type="button" onclick="selectAll()" class="selectit">Marker alt</button>
+                <button type="button" onclick="clearRawarticle()" class="clear">Ryd alt</button><br>
+            </form>
+        </p>
+            <div class="instructions">
+            Kopier artiklen ind i tekstfeltet. Fikser de mest almindelige formateringsfejl: 
+            <ul>
+                <li>Fejlplacerede linkklammer: [ linktekst] og [linktekst.]</li>
+                <li>Ekstra mellemrum ved kopiering af links i Word: [linktekst]( url)</li>
+                <li>Ekstra mellemrum ved kopiering af aid-links i Word: [aid: 123321]</li>
+                <li>Retter Word-citationstegn fra “tekst” og ‘tekst’ til "tekst" og 'tekst'.</li>
+                <li>Retter "citationstegn" om citater til »chevrons«.</li>
+            </ul>
+        </div>
+    </body>
+</html>
