@@ -1,0 +1,48 @@
+            body { background-color: lavender;}
+            h1 { 
+                font-family: "Trebuchet MS", Helvetica, sans-serif;
+                color: steelblue;
+                font-size: 3em;
+            }
+            form {
+                width: 100%;
+            }
+            .padded {
+                padding-left: 30px;
+            }
+            div.instructions {
+                padding-left: 30px;
+                font-family: "Trebuchet MS", Helvetica, sans-serif;
+                font-size: 1.2em;
+                color: darkblue;
+            }
+            input[type=button] {
+                font-size: 1.15em;
+            }
+            button {
+                padding-top: 2px;
+                padding-bottom: 2px;
+                font-size: 1.5em;
+                font-family: "Arial Black", Gadget, sans-serif;
+                margin-top: 5px;
+                margin-bottom: 5px;
+                background-color: steelblue;
+                color: lavender;
+                width: auto;
+                border: 0;
+                border-radius: 2px;
+            }
+            button.clear {
+                background-color: tomato;
+                color: lavender;
+                margin-left: 16px;
+            }
+            button.selectit {
+                background-color: limegreen;
+                color: lavender;
+                margin-left: 16px;
+            }
+            button:hover {
+                background-color: darkorchid;
+                color: black;
+            }

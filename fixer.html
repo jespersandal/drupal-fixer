@@ -4,99 +4,8 @@
         <meta charset="utf-8">
         <meta name="author" content="Jesper Stein Sandal">
         <title>Drupal-fixer 1.0</title>
-        <script>
-            function fixAll() {
-                var unfixed = document.getElementById("rawarticle").value;
-                for (i=0; i<unfixed.length; i++) {
-                    var braindex = 0;
-                    var parindex = 0;
-                    if(unfixed[i] == "]" & unfixed[i-1] == " ") {
-                        var left;
-                        var right;
-                        braindex = i;
-                        parindex = braindex;
-                        var runloop = true;
-                        while (runloop & parindex<unfixed.length) {
-                            if(unfixed[parindex] == ")") {
-                                if(unfixed[parindex+1] == "." || unfixed[parindex+1] == " ") {
-                                    runloop = false;
-                                }
-                                else {
-                                    left = unfixed.slice(0,parindex+1);
-                                    right = unfixed.slice(parindex+1);
-                                    unfixed = left + " " + right;
-                                    left = unfixed.slice(0,braindex-1);
-                                    right = unfixed.slice(braindex);
-                                    unfixed = left + right;
-                                    runloop = false;
-                                }
-                            }
-                            else {
-                                parindex++;
-                                runloop = true;
-                            }
-                        }
-                    }
-                }
-                unfixed = unfixed.replace(/”/g, '"');
-                unfixed = unfixed.replace(/“/g, '"');
-                unfixed = unfixed.replace(/‘/g, "'");
-                unfixed = unfixed.replace(/’/g, "'");
-                unfixed = unfixed.replace(/\[\s/g, " \[");
-                unfixed = unfixed.replace(/\(\s/g, "(");
-                unfixed = unfixed.replace(/\[aid:\s/g, "[aid:");
-                for (i=0; i<unfixed.length; i++) {
-                    if(unfixed[i] == '"'){
-                        var sentenceloop = true;
-                        var sentenceindex = i+1;
-                        while (sentenceloop & sentenceindex<unfixed.length) {
-                            if(unfixed[sentenceindex] == '"') {
-                                if(unfixed[sentenceindex-1] == "," || unfixed[sentenceindex-1] == "?") {
-                                    var left = unfixed.slice(0,i);
-                                    var sentence = unfixed.slice(i+1,sentenceindex);
-                                    var right = unfixed.slice(sentenceindex+1);
-                                    unfixed = left + "»" + sentence + "«" + right;
-                                    sentenceloop = false;
-                                }
-                                else {
-                                    sentenceloop = false;
-                                }
-                            }
-                            else {
-                                sentenceindex++;
-                            }
-                        }
-                    }
-                }
-                for (i=0; i<unfixed.length; i++) {
-                    var braindex = 0;
-                    var parindex = 0;
-                    if(unfixed[i] == "]" & unfixed[i-1] == ".") {
-                        var left;
-                        var right;
-                        braindex = i;
-                        parindex = braindex;
-                        var runloop = true;
-                        while (runloop & parindex<unfixed.length) {
-                            if(unfixed[parindex] == ")") {
-                                left = unfixed.slice(0,parindex+1);
-                                right = unfixed.slice(parindex+1);
-                                unfixed = left + "." + right;
-                                left = unfixed.slice(0,braindex-1);
-                                right = unfixed.slice(braindex);
-                                unfixed = left + right;
-                                runloop = false;
-                            }
-                            else {
-                                parindex++;
-                                runloop = true;
-                            }
-                        }
-                    }
-                }
-                document.getElementById("rawarticle").value = unfixed;
-            }
-        </script>
+        <script src="fixall.js"></script>
+        <script src="unisusu.js"></script>
         <script>
             function clearRawarticle() {
                 document.getElementById("rawarticle").value = "";
@@ -107,53 +16,22 @@
                 document.getElementById("rawarticle").select();
             }
         </script>
-        <style>
-            body { background-color: lavender;}
-            h1 { 
-                font-family: "Trebuchet MS", Helvetica, sans-serif;
-                color: steelblue;
-                font-size: 3em;
+        <script>
+            var wp = false;
+            function wordPerfect() {
+                if(wp) {
+                    document.getElementById("rawarticle").style.background="White";
+                    document.getElementById("rawarticle").style.color="Black";
+                    wp = false;
+                }
+                else {
+                    document.getElementById("rawarticle").style.background="MediumBlue";
+                    document.getElementById("rawarticle").style.color="Snow";
+                    wp = true;
+                }
             }
-            form {
-                width: 100%;
-            }
-            .padded {
-                padding-left: 30px;
-            }
-            div.instructions {
-                padding-left: 30px;
-                font-family: "Trebuchet MS", Helvetica, sans-serif;
-                font-size: 1.2em;
-                color: darkblue;
-            }
-            button {
-                padding-top: 2px;
-                padding-bottom: 2px;
-                font-size: 1.5em;
-                font-family: "Arial Black", Gadget, sans-serif;
-                margin-top: 5px;
-                margin-bottom: 5px;
-                background-color: steelblue;
-                color: lavender;
-                width: auto;
-                border: 0;
-                border-radius: 2px;
-            }
-            button.clear {
-                background-color: tomato;
-                color: lavender;
-                margin-left: 16px;
-            }
-            button.selectit {
-                background-color: limegreen;
-                color: lavender;
-                margin-left: 16px;
-            }
-            button:hover {
-                background-color: darkorchid;
-                color: black;
-            }
-        </style>
+        </script>
+        <link rel="stylesheet" type="text/css" href="fixer.css">
     </head>
     <body>
         <div class="padded">
@@ -161,7 +39,10 @@
         </div>
         <p>
             <form class="padded">
-                <textarea name="rawarticle" id="rawarticle" rows="20" cols="120"></textarea><br>
+                <input type="button" value="H₂O" id="subbutton" onclick="subSubstitute()" alt="Sænket skrift" title="Sænket skrift">
+                <input type="button" value="E=mc²" id="supbutton" onclick="supSubstitute()" alt="Hævet skrift" title="Hævet skrift">
+                <input type="button" value="WP5.1" onclick="wordPerfect()" alt="WordPerfect-farver" title="WordPerfect-farver"><br>
+                <textarea name="rawarticle" id="rawarticle" rows="20" cols="120" onselect="getSelectedText()"></textarea><br>
                 <button type="button" onclick="fixAll()">Fiks alt!</button>
                 <button type="button" onclick="selectAll()" class="selectit">Marker alt</button>
                 <button type="button" onclick="clearRawarticle()" class="clear">Ryd alt</button><br>
