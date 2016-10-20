@@ -35,6 +35,7 @@
                 unfixed = unfixed.replace(/“/g, '"');
                 unfixed = unfixed.replace(/‘/g, "'");
                 unfixed = unfixed.replace(/’/g, "'");
+                unfixed = unfixed.replace(/¬/g, "");
                 unfixed = unfixed.replace(/\[\s/g, " \[");
                 unfixed = unfixed.replace(/\(\s/g, "(");
                 unfixed = unfixed.replace(/\[aid:\s/g, "[aid:");
