@@ -1,4 +1,4 @@
-            function fixAll() {
+function fixAll() {
                 var unfixed = document.getElementById("rawarticle").value;
                 for (i=0; i<unfixed.length; i++) {
                     var braindex = 0;
@@ -51,6 +51,29 @@
                                     var right = unfixed.slice(sentenceindex+1);
                                     unfixed = left + "»" + sentence + "«" + right;
                                     sentenceloop = false;
+                                }
+                                else if(unfixed[i-1] != " " && unfixed[sentenceindex-1] == ".") {
+                                    var linebreak; 
+                                    if(i<= 1) {
+                                        var left = unfixed.slice(0,i);
+                                        var sentence = unfixed.slice(i+1,sentenceindex);
+                                        var right = unfixed.slice(sentenceindex+1);
+                                        unfixed = left + "»" + sentence + "«" + right;
+                                        sentenceloop = false;
+                                    }
+                                    else {
+                                        linebreak = unfixed.slice(i-2,i);
+                                        console.log(linebreak);
+                                        var found = linebreak.match(/\n/g);
+                                        console.log(found);
+                                        if(found != null) {
+                                            var left = unfixed.slice(0,i);
+                                            var sentence = unfixed.slice(i+1,sentenceindex);
+                                            var right = unfixed.slice(sentenceindex+1);
+                                            unfixed = left + "»" + sentence + "«" + right;
+                                            sentenceloop = false;
+                                        }
+                                    }
                                 }
                                 else {
                                     sentenceloop = false;
