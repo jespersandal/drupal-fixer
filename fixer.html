@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,6 +31,14 @@
                 }
             }
         </script>
+        <script>
+            function lineBreaker() {
+                var unfixed = document.getElementById("rawarticle").value;
+                unfixed = unfixed.replace(/\n\n\n/g, "\n\n");
+                document.getElementById("rawarticle").value = unfixed;
+            }
+        </script>
+        <link rel="stylesheet" type="text/css" href="fixer.css">
         <link rel="stylesheet" type="text/css" href="fixer.css">
     </head>
     <body>
@@ -40,6 +47,7 @@
         </div>
         <p>
             <form class="padded">
+                <input type="button" value="Linjeskift" id="linjeskift" onclick="lineBreaker()" alt="Fjern ekstra linjeskift" title="Fjern ekstra linjeskift">
                 <input type="button" value="H₂O" id="subbutton" onclick="subSubstitute()" alt="Sænket skrift" title="Sænket skrift">
                 <input type="button" value="E=mc²" id="supbutton" onclick="supSubstitute()" alt="Hævet skrift" title="Hævet skrift">
                 <input type="button" value="WP5.1" onclick="wordPerfect()" alt="WordPerfect-farver" title="WordPerfect-farver"><br>
