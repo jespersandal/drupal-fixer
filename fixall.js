@@ -1,4 +1,5 @@
 function fixAll() {
+                saveText();
                 var unfixed = document.getElementById("rawarticle").value;
                 for (i=0; i<unfixed.length; i++) {
                     var braindex = 0;

@@ -42,6 +42,14 @@
                 color: lavender;
                 margin-left: 16px;
             }
+            button.clearsome {
+                background-color: darkgoldenrod;
+                margin-left: 16px;
+            }
+            button.undo {
+                background-color: darkolivegreen;
+                margin-left: 16px;
+            }
             button:hover {
                 background-color: darkorchid;
                 color: black;

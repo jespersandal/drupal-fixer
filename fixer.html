@@ -4,10 +4,13 @@
         <meta charset="utf-8">
         <meta name="author" content="Jesper Stein Sandal">
         <title>Drupal-fixer 1.0</title>
+        <script src="undo.js"></script>
         <script src="fixall.js"></script>
         <script src="unisusu.js"></script>
+        <script src="markdown.js"></script>
         <script>
             function clearRawarticle() {
+                saveText();
                 document.getElementById("rawarticle").value = "";
             }
         </script>
@@ -31,13 +34,6 @@
                 }
             }
         </script>
-        <!--script>
-            function lineBreaker() {
-                var unfixed = document.getElementById("rawarticle").value;
-                unfixed = unfixed.replace(/\n\n\n/g, "\n\n");
-                document.getElementById("rawarticle").value = unfixed;
-            }
-        </script -->
         <link rel="stylesheet" type="text/css" href="fixer.css">
         <link rel="stylesheet" type="text/css" href="fixer.css">
     </head>
@@ -47,14 +43,16 @@
         </div>
         <p>
             <form class="padded">
-                <!-- input type="button" value="Linjeskift" id="linjeskift" onclick="lineBreaker()" alt="Fjern ekstra linjeskift" title="Fjern ekstra linjeskift" -->
-                <input type="button" value="H₂O" id="subbutton" onclick="subSubstitute()" alt="Sænket skrift" title="Sænket skrift">
-                <input type="button" value="E=mc²" id="supbutton" onclick="supSubstitute()" alt="Hævet skrift" title="Hævet skrift">
+                <button type="button" id="supbutton" onclick="supSubstitute()" alt="Hævet skrift" title="Hævet skrift">E=mc²</button>
+                <button type="button" id="subbutton" onclick="subSubstitute()" alt="Sænket skrift" title="Sænket skrift">H₂O</button>     
+                <!-- input type="button" value="Mark-off" id="markoff" onclick="undo()" alt="undo" title="undo" -->
                 <!-- input type="button" value="WP5.1" onclick="wordPerfect()" alt="WordPerfect-farver" title="WordPerfect-farver" --><br>
                 <textarea name="rawarticle" id="rawarticle" rows="20" cols="120" onselect="getSelectedText()"></textarea><br>
                 <button type="button" onclick="fixAll()">Fiks alt!</button>
                 <button type="button" onclick="selectAll()" class="selectit">Marker alt</button>
-                <button type="button" onclick="clearRawarticle()" class="clear">Ryd alt</button><br>
+                <button type="button" onclick="clearRawarticle()" class="clear">Ryd alt</button>
+                <button type="button" onclick="stripMarkdown()" class="clearsome">Fjern Markdown</button>
+                <button type="button" onclick="undo()" class="undo">Fortryd</button><br>
             </form>
         </p>
             <div class="instructions">
@@ -63,9 +61,12 @@
                 <li>Fejlplacerede linkklammer: [ linktekst] og [linktekst.]</li>
                 <li>Ekstra mellemrum ved kopiering af links i Word: [linktekst]( url)</li>
                 <li>Ekstra mellemrum ved kopiering af aid-links i Word: [aid: 123321]</li>
-                <li>Linjeskifttegn ¬ i artikler importeret fra Indesign</li>
+                <li>Linjeskifttegn ¬ i artikler importeret fra Indesign.</li>
                 <li>Retter Word-citationstegn fra “tekst” og ‘tekst’ til "tekst" og 'tekst'.</li>
                 <li>Retter "citationstegn" om citater til »chevrons«.</li>
+                <li>'Fjern Markdown' fjerner de fleste tags, formateringer og dobbelte linjeskift til import til avis.</li>
+                <li>'Fortryd' kan annullere den seneste ændring.</li>
+                <li>Knapperne 'E=mc²' og 'H₂O' kan hæve og sænke markerede tal i teksten.</li>
             </ul>
         </div>
     </body>

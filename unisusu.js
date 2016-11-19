@@ -11,6 +11,7 @@
             }
             function subSubstitute() {
                 var unisubchars = ["₀", "₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉"];
+                saveText();
                 var lefttext = holdtext.slice(0, selstart);
                 var righttext = holdtext.slice(selend);
                 var subbedtext = seltext;
@@ -77,6 +78,7 @@
             }
             function supSubstitute() {
                 var unisupchars = ["⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹", "ⁿ"];
+                saveText();
                 var lefttext = holdtext.slice(0, selstart);
                 var righttext = holdtext.slice(selend);
                 var subbedtext = seltext;
