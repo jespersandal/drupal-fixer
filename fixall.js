@@ -41,7 +41,7 @@ function fixAll() {
                 unfixed = unfixed.replace(/\(\s/g, "(");
                 unfixed = unfixed.replace(/\[aid:\s/g, "[aid:");
                 unfixed = unfixed.replace(/\n\n\n/g, "\n\n");  
-                unfixed = unfixed.replace(/\n+$/, "");
+                unfixed = unfixed.replace(/\s+$/, "");
                 for (i=0; i<unfixed.length; i++) {
                     if(unfixed[i] == '"'){
                         var sentenceloop = true;
