@@ -36,6 +36,8 @@ function fixAll() {
                 unfixed = unfixed.replace(/“/g, '"');
                 unfixed = unfixed.replace(/‘/g, "'");
                 unfixed = unfixed.replace(/’/g, "'");
+                unfixed = unfixed.replace(/´/g, "'");
+                unfixed = unfixed.replace(/`/g, "'");
                 unfixed = unfixed.replace(/¬/g, "");
                 unfixed = unfixed.replace(/\[\s/g, " \[");
                 unfixed = unfixed.replace(/\(\s/g, "(");
@@ -65,9 +67,7 @@ function fixAll() {
                                     }
                                     else {
                                         linebreak = unfixed.slice(i-2,i);
-                                        console.log(linebreak);
                                         var found = linebreak.match(/\n/g);
-                                        console.log(found);
                                         if(found != null) {
                                             var left = unfixed.slice(0,i);
                                             var sentence = unfixed.slice(i+1,sentenceindex);
@@ -76,6 +76,13 @@ function fixAll() {
                                             sentenceloop = false;
                                         }
                                     }
+                                }
+                                else if(unfixed[i-1] != " " && unfixed[sentenceindex+1].match(/\s/) != null) {
+                                    var left = unfixed.slice(0,i);
+                                    var sentence = unfixed.slice(i+1,sentenceindex);
+                                    var right = unfixed.slice(sentenceindex+1);
+                                    unfixed = left + "»" + sentence + "«" + right;
+                                    sentenceloop = false;
                                 }
                                 else {
                                     sentenceloop = false;
