@@ -1,4 +1,4 @@
-            body { background-color: lavender;}
+            body { background-color: whitesmoke;}
             h1 { 
                 font-family: "Trebuchet MS", Helvetica, sans-serif;
                 color: steelblue;
@@ -31,26 +31,32 @@
                 width: auto;
                 border: 0;
                 border-radius: 2px;
+                margin-left: 4px;
+            }
+            button.left {
+                margin-left: 0px;
             }
             button.clear {
                 background-color: tomato;
-                color: lavender;
-                margin-left: 16px;
+                color: lavender;    
             }
             button.selectit {
                 background-color: limegreen;
                 color: lavender;
-                margin-left: 16px;
+                
             }
             button.clearsome {
                 background-color: darkgoldenrod;
-                margin-left: 16px;
+                
             }
             button.undo {
                 background-color: darkolivegreen;
-                margin-left: 16px;
+                
             }
             button:hover {
                 background-color: darkorchid;
                 color: black;
+            }
+            .bigger {
+                font-size: 14pt;
             }

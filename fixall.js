@@ -4,13 +4,13 @@ function fixAll() {
                 for (i=0; i<unfixed.length; i++) {
                     var braindex = 0;
                     var parindex = 0;
-                    if(unfixed[i] == "]" & unfixed[i-1] == " ") {
+                    if(unfixed[i] == "]" && unfixed[i-1] == " ") {
                         var left;
                         var right;
                         braindex = i;
                         parindex = braindex;
                         var runloop = true;
-                        while (runloop & parindex<unfixed.length) {
+                        while (runloop && parindex<unfixed.length) {
                             if(unfixed[parindex] == ")") {
                                 if(unfixed[parindex+1] == "." || unfixed[parindex+1] == " ") {
                                     runloop = false;
@@ -47,7 +47,7 @@ function fixAll() {
                     if(unfixed[i] == '"'){
                         var sentenceloop = true;
                         var sentenceindex = i+1;
-                        while (sentenceloop & sentenceindex<unfixed.length) {
+                        while (sentenceloop && sentenceindex<unfixed.length) {
                             if(unfixed[sentenceindex] == '"') {
                                 if(unfixed[sentenceindex-1] == "," || unfixed[sentenceindex-1] == "?") {
                                     var left = unfixed.slice(0,i);
@@ -97,13 +97,13 @@ function fixAll() {
                 for (i=0; i<unfixed.length; i++) {
                     var braindex = 0;
                     var parindex = 0;
-                    if(unfixed[i] == "]" & unfixed[i-1] == ".") {
+                    if(unfixed[i] == "]" && unfixed[i-1] == ".") {
                         var left;
                         var right;
                         braindex = i;
                         parindex = braindex;
                         var runloop = true;
-                        while (runloop & parindex<unfixed.length) {
+                        while (runloop && parindex<unfixed.length) {
                             if(unfixed[parindex] == ")") {
                                 left = unfixed.slice(0,parindex+1);
                                 right = unfixed.slice(parindex+1);

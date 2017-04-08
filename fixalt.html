@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="Jesper Stein Sandal">
+        <title>Fiks Alt! - Ret tekstformatering i tekst, HTML og Markdown</title>
+        <script src="undo.js"></script>
+        <script src="fixall.js"></script>
+        <script src="unisusu.js"></script>
+        <script src="markdown.js"></script>
+        <script src="ing.js"></script>
+        <script>
+            function clearRawarticle() {
+                saveText();
+                document.getElementById("rawarticle").value = "";
+            }
+        </script>
+        <script>
+            function selectAll() {
+                document.getElementById("rawarticle").select();
+            }
+        </script>
+        <script>
+            var wp = false;
+            function wordPerfect() {
+                if(wp) {
+                    document.getElementById("rawarticle").style.background="White";
+                    document.getElementById("rawarticle").style.color="Black";
+                    wp = false;
+                }
+                else {
+                    document.getElementById("rawarticle").style.background="MediumBlue";
+                    document.getElementById("rawarticle").style.color="Snow";
+                    wp = true;
+                }
+            }
+        </script>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="fixer.css">
+    </head>
+    <body>
+        <div class="padded">
+            <h1>Ret tekstformatering</h1>
+        </div>
+            <form class="padded">
+                <button type="button" id="supbutton" onclick="supSubstitute()" alt="Hævet skrift" title="Hævet skrift" class="left">E=mc²</button>
+                <button type="button" id="subbutton" onclick="subSubstitute()" alt="Sænket skrift" title="Sænket skrift">H₂O</button>
+                <button type="button" id="ingbutton" onclick="INGquote()" alt="Krøllede enkelt-anførselstegn som på ING" title="Krøllede enkelt-anførselstegn som på ING">‘ ’</button>
+                <button type="button" onclick="stripMarkdown()" class="clearsome">Fjern Markdown</button>     
+                <!-- input type="button" value="WP5.1" onclick="wordPerfect()" alt="WordPerfect-farver" title="WordPerfect-farver" --><br>
+                <textarea name="rawarticle" id="rawarticle" rows="20" cols="120" onselect="getSelectedText()"></textarea><br>
+                <button type="button" onclick="fixAll()" class="left">Fiks alt!</button>
+                <!-- <button type="button" onclick="fixcookie()">Fiks valgt (beta)</button> -->
+                <button type="button"><i class="fa fa-cog"></i> Indstillinger</button>
+                <button type="button" onclick="selectAll()" class="selectit">Marker alt</button>
+                <button type="button" onclick="clearRawarticle()" class="clear">Ryd alt</button> 
+                <button type="button" onclick="undo()" class="undo">Fortryd</button><br>
+            </form>
+            <div class="instructions">
+            Kopier artiklen ind i tekstfeltet. Fikser de mest almindelige formateringsfejl: 
+            <ul>
+                <li>Fejlplacerede linkklammer: [ linktekst] og [linktekst.]</li>
+                <li>Ekstra mellemrum ved kopiering af links i Word: [linktekst]( url)</li>
+                <li>Ekstra mellemrum ved kopiering af aid-links i Word: [aid: 123321]</li>
+                <li>Linjeskifttegn ¬ i artikler importeret fra Indesign.</li>
+                <li>Retter Word-citationstegn fra “tekst” og ‘tekst’ til "tekst" og 'tekst'.</li>
+                <li>Retter "citationstegn" om citater til »chevrons«.</li>
+                <li>'Fjern Markdown' fjerner de fleste tags, formateringer og dobbelte linjeskift til import til avis.</li>
+                <li>'Fortryd' kan annullere den seneste ændring.</li>
+                <li>Knapperne 'E=mc²' og 'H₂O' kan hæve og sænke markerede tal i teksten.</li>
+                <li>Knappen ‘ ’ ændrer alle lige enkelt-anførselstegn i teksten til krøllede enkelt-anførselstegn (som på ing.dk)</li>
+            </ul>
+        </div>
+    </body>
+</html>

@@ -3,12 +3,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="author" content="Jesper Stein Sandal">
-        <title>Drupal-fixer 1.0</title>
+        <title>Fiks Alt! 2.0 - Ret tekstformatering i tekst til CMS</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
         <script src="undo.js"></script>
-        <script src="fixall.js"></script>
         <script src="unisusu.js"></script>
         <script src="markdown.js"></script>
-        <script src="ing.js"></script>
+        <script src="fixpick.js"></script>
         <script>
             function clearRawarticle() {
                 saveText();
@@ -19,41 +20,84 @@
             function selectAll() {
                 document.getElementById("rawarticle").select();
             }
-        </script>
-        <script>
-            var wp = false;
-            function wordPerfect() {
-                if(wp) {
-                    document.getElementById("rawarticle").style.background="White";
-                    document.getElementById("rawarticle").style.color="Black";
-                    wp = false;
-                }
-                else {
-                    document.getElementById("rawarticle").style.background="MediumBlue";
-                    document.getElementById("rawarticle").style.color="Snow";
-                    wp = true;
-                }
-            }
-        </script>
-        <link rel="stylesheet" type="text/css" href="fixer.css">
+        </script>        
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="fixer.css">
     </head>
     <body>
+        
+        <!-- Modal-box for settings -->
+
+        <div class="modal fade" id="settings">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="resetForm()">&times;</button>
+                        <h4 class="modal-title">Indstillinger</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <strong>Linjeskift:</strong><br>
+                            <input type="radio" id="linjeskiftA" name="linjeskift" value="A"> Ingen ekstra linjeskift ved nyt afsnit.<br>
+                            <input type="radio" id="linjeskiftB" name="linjeskift" value="B"> Et ekstra linjeskift ved nyt afsnit (dobbelt).<br>
+                            <input type="checkbox" id="xlinjeskift" name="xlinjeskift"> Fjern alle ekstra linjeskift (mere end dobbelt).
+                            <hr>
+                            <strong>Citationstegn:</strong><br>
+                            <input type="checkbox" id="citationstegn" name="citationstegn"> Ret citationstegn.<br>
+                            Citationstegn om citater: 
+                            <select id="citater" name="citater" class="bigger">
+                                <option value="A" class="bigger">"citat"</option>
+                                <option value="B" class="bigger">»citat«</option>
+                                <option value="C" class="bigger">“citat”</option>
+                                <option value="D" class="bigger">‘citat’</option>
+                                <option value="E" class="bigger">'citat'</option>
+                                <option value="F" class="bigger">«citat»</option>
+                                <option value="G" class="bigger">„citat“</option>
+                                <option value="H" class="bigger">„citat”</option>
+                                <option value="I" class="bigger">”citat”</option>
+                            </select><br><br>
+                            Enkelte anførselstegn:
+                            <select id="enkeltquotes" name="enkeltquotes" class="bigger">
+                                <option value="A" class="bigger">'tekst'</option>
+                                <option value="B" class="bigger">‘tekst’</option>
+                                <option value="C" class="bigger">‚tekst‘</option>
+                                <option value="D" class="bigger">’tekst’</option>
+                                <option value="E" class="bigger">‚tekst’</option>
+                            </select><br>
+                            <input type="checkbox" id="dobbeltenkelt" name="dobbeltenkelt"> Ret dobbelte anførselstegn til enkelte (undtagen citater).<br>
+                            <hr>
+                            <input type="checkbox" id="fixmarkdown" name="fixmarkdown"> Justér MarkDown-koder.
+
+                        </form>
+                        <script>
+                            resetForm();
+                            function saveChanges() {
+                                var changes = cookieBaker();
+                                createCookie("settings", changes, 365);
+                            }
+                        </script>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="resetForm()">Annullér</button>
+                        <button type="button" class="btn btn-primary" onclick="saveChanges()" data-dismiss="modal">Gem Indstillinger</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="padded">
-            <h1>Ret artikelformatering til Drupal</h1>
+            <h1>Ret tekstformatering til CMS</h1>
         </div>
             <form class="padded">
-                <button type="button" id="supbutton" onclick="supSubstitute()" alt="Hævet skrift" title="Hævet skrift">E=mc²</button>
+                <button type="button" id="supbutton" onclick="supSubstitute()" alt="Hævet skrift" title="Hævet skrift" class="left">E=mc²</button>
                 <button type="button" id="subbutton" onclick="subSubstitute()" alt="Sænket skrift" title="Sænket skrift">H₂O</button>
-                <button type="button" id="ingbutton" onclick="INGquote()" alt="Krøllede enkelt-anførselstegn som på ING" title="Krøllede enkelt-anførselstegn som på ING">‘ ’</button>     
-                <!-- input type="button" value="Mark-off" id="markoff" onclick="undo()" alt="undo" title="undo" -->
-                <!-- input type="button" value="WP5.1" onclick="wordPerfect()" alt="WordPerfect-farver" title="WordPerfect-farver" --><br>
+                <button type="button" onclick="stripMarkdown()" class="clearsome" alt="Fjern det meste MarkDown-formatering og links" title="Fjern det meste MarkDown-formatering og links" >Fjern Markdown</button><br>
                 <textarea name="rawarticle" id="rawarticle" rows="20" cols="120" onselect="getSelectedText()"></textarea><br>
-                <button type="button" onclick="fixAll()">Fiks alt!</button>
-                <button type="button" onclick="selectAll()" class="selectit">Marker alt</button>
-                <button type="button" onclick="clearRawarticle()" class="clear">Ryd alt</button>
-                <button type="button" onclick="stripMarkdown()" class="clearsome">Fjern Markdown</button>
-                <button type="button" onclick="undo()" class="undo">Fortryd</button><br>
+                <button type="button" onclick="fixCookie('rawarticle')" class="left" alt="Fikser alle almindelige formateringsfejl" title="Fikser alle almindelige formateringsfejl">Fiks alt!</button>
+                <button type="button" alt="Indstillinger" title="Indstillinger" data-toggle="modal" data-target="#settings"><i class="fa fa-cog"></i></button>
+                <button type="button" onclick="selectAll()" class="selectit" alt="Markér al teksten i tekstfeltet" title="Markér al teksten i tekstfeltet">Marker alt</button>
+                <button type="button" onclick="clearRawarticle()" class="clear" alt="Slet teksten i tekstfeltet" title="Slet teksten i tekstfeltet">Ryd alt</button> 
+                <button type="button" onclick="undo()" class="undo" alt="Fortryd den seneste handling" title="Fortryd den seneste handling">Fortryd</button><br>
             </form>
             <div class="instructions">
             Kopier artiklen ind i tekstfeltet. Fikser de mest almindelige formateringsfejl: 
@@ -62,13 +106,13 @@
                 <li>Ekstra mellemrum ved kopiering af links i Word: [linktekst]( url)</li>
                 <li>Ekstra mellemrum ved kopiering af aid-links i Word: [aid: 123321]</li>
                 <li>Linjeskifttegn ¬ i artikler importeret fra Indesign.</li>
-                <li>Retter Word-citationstegn fra “tekst” og ‘tekst’ til "tekst" og 'tekst'.</li>
-                <li>Retter "citationstegn" om citater til »chevrons«.</li>
+                <li>Retter Word-citationstegn fra “tekst” og ‘tekst’ til det, der er valgt i Indstillinger.</li>
+                <li>Retter "citationstegn" om citater til »chevrons« eller det, der er valgt i Indstillinger.</li>
                 <li>'Fjern Markdown' fjerner de fleste tags, formateringer og dobbelte linjeskift til import til avis.</li>
                 <li>'Fortryd' kan annullere den seneste ændring.</li>
                 <li>Knapperne 'E=mc²' og 'H₂O' kan hæve og sænke markerede tal i teksten.</li>
-                <li>Knappen ‘ ’ ændrer alle lige enkelt-anførselstegn i teksten til krøllede enkelt-anførselstegn (som på ing.dk)</li>
             </ul>
         </div>
+        
     </body>
 </html>
