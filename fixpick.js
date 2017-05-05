@@ -68,6 +68,7 @@ function fixCookie(textareaID) {
             unfixed = unfixed.replace(/“/g, markin);
             unfixed = unfixed.replace(/”/g, markout);
         }
+        // Similarly, this part could cause issues if converting from French quotes:
         if (settings.charAt(3) != "B") {
             unfixed = unfixed.replace(/»/g, markin);
             unfixed = unfixed.replace(/«/g, markout);
@@ -76,6 +77,9 @@ function fixCookie(textareaID) {
         // As a temporary fix, we replace with straight quotes.
         unfixed = unfixed.replace(/”/g, '"');
         unfixed = unfixed.replace(/“/g, '"');
+        // Another fix needed: if a quote contains another quote and both use
+        // the same quotation marks, not all will be fixed. That will require
+        // a tweak of the algorithm.
         // Next, we fix sentences marked with straight double quotes by running
         // through the text, checking for punctuation, and trying to slice
         // the substrings at the right place.
