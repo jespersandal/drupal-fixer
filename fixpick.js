@@ -61,6 +61,9 @@ function fixCookie(textareaID) {
                 break;
         }
         // First, a simple substitution of marks with different start and end:
+        // This part creates issues with documents where end marks are used for
+        // both beginning and end. XXX FIXME
+        /*
         if (settings.charAt(3) != "C") {
             unfixed = unfixed.replace(/“/g, markin);
             unfixed = unfixed.replace(/”/g, markout);
@@ -69,6 +72,10 @@ function fixCookie(textareaID) {
             unfixed = unfixed.replace(/»/g, markin);
             unfixed = unfixed.replace(/«/g, markout);
         }
+        */
+        // As a temporary fix, we replace with straight quotes.
+        unfixed = unfixed.replace(/”/g, '"');
+        unfixed = unfixed.replace(/“/g, '"');
         // Next, we fix sentences marked with straight double quotes by running
         // through the text, checking for punctuation, and trying to slice
         // the substrings at the right place.
