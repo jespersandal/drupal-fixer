@@ -117,6 +117,14 @@ function fixCookie(textareaID) {
                                 }
                             }
                         }
+                        else if (unfixed[sentenceindex - 1].match(/\w/) != null && unfixed[sentenceindex + 1].match(/[\s\.,]/) != null) {
+                            sentenceindex++;
+                            sentenceloop = true;
+                        }
+                        else if (unfixed[sentenceindex - 1].match(/\s/) != null && unfixed[sentenceindex + 1].match(/\w/) != null) {
+                            sentenceindex++;
+                            sentenceloop = true;
+                        }
                         else if (unfixed[i - 1] != " " && unfixed[sentenceindex + 1].match(/\s/) != null) {
                             var left = unfixed.slice(0, i);
                             var sentence = unfixed.slice(i + 1, sentenceindex);
@@ -249,9 +257,15 @@ function fixCookie(textareaID) {
         unfixed = unfixed.replace(/\(\s/g, "(");
         unfixed = unfixed.replace(/\[aid:\s/g, "[aid:");
     }
+    // Fixing dashes - default is a medium dash. Might add option later for different styles (American).
+    if (settings.charAt(7) == "Y") {
+        unfixed = unfixed.replace(/\s\-\s/g, " – ");
+    }
     // Various small fixes that should always be fixed:
     // Removes trailing whitespace characters:
     unfixed = unfixed.replace(/\s+$/, "");
+    // Replace accents used as apostrophes:
+    unfixed = unfixed.replace(/´/g, "'");
     // Removes line-break character from text copied from Adobe InDesign:
     unfixed = unfixed.replace(/¬/g, "");
     document.getElementById(textareaID).value = unfixed;
@@ -299,6 +313,12 @@ function cookieBaker() {
     else {
         cookiestring = cookiestring + "N";
     }
+    if (document.getElementById("fixdashes")) {
+        cookiestring = cookiestring + "Y";
+    }
+    else {
+        cookiestring = cookiestring + "N";
+    }
     return cookiestring;
 }
 
@@ -327,6 +347,9 @@ function resetForm() {
     }
     if (cookiestring.charAt(6) == "Y") {
         document.getElementById("fixmarkdown").checked = true;
+    }
+    if (cookiestring.charAt(7) == "Y") {
+        document.getElementById("fixdashes").checked = true;
     }
 }
 
@@ -368,7 +391,7 @@ function deleteCookie(cookiename) {
 }
 
 function checkCookie(cookiename) {
-    defaultsettings = "BYYBBNY";
+    defaultsettings = "BYYBBNYY";
     var settings = readCookie(cookiename);
     if (settings != "" && settings != null) {
         return settings;
