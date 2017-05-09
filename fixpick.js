@@ -115,6 +115,16 @@ function fixCookie(textareaID) {
                                     unfixed = left + markin + sentence + markout + right;
                                     sentenceloop = false;
                                 }
+                                else {
+                                    if (unfixed.charAt(sentenceindex + 1) == "\n") {
+                                        var left = unfixed.slice(0, i);
+                                        var sentence = unfixed.slice(i + 1, sentenceindex);
+                                        var right = unfixed.slice(sentenceindex + 1);
+                                        unfixed = left + markin + sentence + markout + right;
+                                        sentenceloop = false;
+                                    }
+                                    //console.log("else condition triggered");
+                                }
                             }
                         }
                         else if (unfixed[sentenceindex - 1].match(/\w/) != null && unfixed[sentenceindex + 1].match(/[\s\.,]/) != null) {
