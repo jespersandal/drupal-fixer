@@ -127,6 +127,8 @@ function fixCookie(textareaID) {
                                 }
                             }
                         }
+                        // Most of the following rules are here to catch irregular use of
+                        // double quotation marks or missing punctuation:
                         else if (unfixed[i - 1] != " " && unfixed[sentenceindex + 1].match(/\s/) != null) {
                             var left = unfixed.slice(0, i);
                             var sentence = unfixed.slice(i + 1, sentenceindex);
