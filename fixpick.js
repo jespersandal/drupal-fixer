@@ -127,6 +127,41 @@ function fixCookie(textareaID) {
                                 }
                             }
                         }
+                        else if (unfixed[i - 1] != " " && unfixed[sentenceindex + 1].match(/\s/) != null) {
+                            var left = unfixed.slice(0, i);
+                            var sentence = unfixed.slice(i + 1, sentenceindex);
+                            var right = unfixed.slice(sentenceindex + 1);
+                            unfixed = left + markin + sentence + markout + right;
+                            sentenceloop = false;
+                        }
+                        else if (unfixed[i - 1] == " " && unfixed[sentenceindex + 1] == " ") {
+                            var left = unfixed.slice(0, i);
+                            var sentence = unfixed.slice(i + 1, sentenceindex);
+                            var right = unfixed.slice(sentenceindex + 1);
+                            unfixed = left + "'" + sentence + "'" + right;
+                            sentenceloop = false;
+                        }
+                        else if (unfixed[i - 1].match(/\n/) != null && unfixed[sentenceindex - 1].match(/\w/) != null) {
+                            var left = unfixed.slice(0, i);
+                            var sentence = unfixed.slice(i + 1, sentenceindex);
+                            var right = unfixed.slice(sentenceindex + 1);
+                            unfixed = left + markin + sentence + markout + right;
+                            sentenceloop = false;
+                        }
+                        else if (unfixed[i - 1] == " " && unfixed[sentenceindex - 1].match(/\w/) != null) {
+                            var left = unfixed.slice(0, i);
+                            var sentence = unfixed.slice(i + 1, sentenceindex);
+                            var right = unfixed.slice(sentenceindex + 1);
+                            unfixed = left + "'" + sentence + "'" + right;
+                            sentenceloop = false;
+                        }
+                        else if (unfixed[i - 1] == " " && unfixed[sentenceindex - 1].match(/[\w\.,]/) != null) {
+                            var left = unfixed.slice(0, i);
+                            var sentence = unfixed.slice(i + 1, sentenceindex);
+                            var right = unfixed.slice(sentenceindex + 1);
+                            unfixed = left + markin + sentence + markout + right;
+                            sentenceloop = false;
+                        }
                         else if (unfixed[sentenceindex - 1].match(/\w/) != null && unfixed[sentenceindex + 1].match(/[\s\.,]/) != null) {
                             sentenceindex++;
                             sentenceloop = true;
@@ -134,13 +169,6 @@ function fixCookie(textareaID) {
                         else if (unfixed[sentenceindex - 1].match(/\s/) != null && unfixed[sentenceindex + 1].match(/\w/) != null) {
                             sentenceindex++;
                             sentenceloop = true;
-                        }
-                        else if (unfixed[i - 1] != " " && unfixed[sentenceindex + 1].match(/\s/) != null) {
-                            var left = unfixed.slice(0, i);
-                            var sentence = unfixed.slice(i + 1, sentenceindex);
-                            var right = unfixed.slice(sentenceindex + 1);
-                            unfixed = left + markin + sentence + markout + right;
-                            sentenceloop = false;
                         }
                         else {
                             sentenceloop = false;
